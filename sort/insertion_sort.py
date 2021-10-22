@@ -1,6 +1,3 @@
-import sort_data
-
-
 def insertion_sort(arr, comp=lambda x, y: x < y):
     if len(arr) == 1:
         return arr
@@ -12,6 +9,3 @@ def insertion_sort(arr, comp=lambda x, y: x < y):
             j -= 1
         arr[j+1] = key
     return arr
-
-
-print(insertion_sort(sort_data.input))
