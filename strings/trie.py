@@ -2,7 +2,7 @@ import re
 
 
 class Node:
-    SYMBOLS = re.compile('[a-z]{1}')
+    SYMBOLS = re.compile('([a-z]{1}|[0-9]+)')
     EMPTY = ' '
 
     def __init__(self, symbol):
