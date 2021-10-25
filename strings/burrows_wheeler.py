@@ -3,6 +3,7 @@
 Target -> Burrows-Wheeler transform -> Run-Length encocing
 """
 
+
 class RLItem:
     def __init__(self):
         self.length_char = []
