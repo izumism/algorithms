@@ -116,6 +116,8 @@ def construct_trie(patterns: List[str]) -> Node:
 
 def prefix_trie_matching(text: str, trie: Node) -> bool:
     """Check if given text matches pattern represented as trie node.
+    When source text retrieving pattern trie reaches leaf, it means
+    that text mathces patterns.
     """
     if not text:
         return text
@@ -144,9 +146,9 @@ def trie_matching(whole_text, trie) -> bool:
     return result
 
 
-def construct_suffix_trie(text: str) -> Node:
-    """Memory inefficient & simple implementation for constructing
-    suffix trie
+def construct_incomplete_suffix_trie(text: str) -> Node:
+    """Constructing suffix trie from source text beeing checked by pattern.
+    Memory inefficient & simple implementation.
     """
     root = Node.empty()
     for i in range(len(text)):
