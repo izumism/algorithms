@@ -16,14 +16,29 @@ class Node:
     """
 
     # Regex pattern representing symbol value's restriction.
-    SYMBOLS = re.compile('([a-z]{1}|[0-9]+)')
+    SYMBOLS = re.compile('[a-z]{1}')
+    # Representing text's suffix's position.
+    NUMBERS = re.compile('[0-9]+')
     # Reserved character for representing root Node.
-    EMPTY = ' ' 
+    EMPTY = ' '
+
+    @staticmethod
+    def acceptable(symbol):
+        is_for_value = Node.SYMBOLS.match(symbol)
+        if is_for_value:
+            return True
+        is_for_position = Node.NUMBERS.match(symbol)
+        if is_for_position:
+            return True
+        is_for_root = symbol is Node.EMPTY
+        if is_for_root:
+            return True
+        return False
 
     def __init__(self, symbol: Char):
         """Accepts only one character defined as pattern at SYMBOLS.
         """
-        if not (Node.SYMBOLS.match(symbol) or symbol == Node.EMPTY):
+        if not Node.acceptable(symbol):
             msg = "symbol must be alphaneumeric or empty character"
             raise RuntimeError(msg)
 
