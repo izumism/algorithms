@@ -58,7 +58,7 @@ class TestSort(unittest.TestCase):
         actual = burrows_wheeler_decoding_bad(input)
         expected = 'banana'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
-    
+
     def test_burrows_wheeler_decoding(self):
         input = 'smnpbnnaaaaa$a'
         actual = burrows_wheeler_decoding(input)
