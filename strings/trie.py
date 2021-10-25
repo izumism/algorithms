@@ -1,25 +1,49 @@
 import re
 
 
+Char = str
+
+
 class Node:
+    """Primitive building block for trie.
+
+    Can hold one-character string for pattern symbol.
+
+    Attributes:
+        _symbol: holding character value.
+        _children: link to children which is also Node.
+    """
+
+    # Regex pattern representing symbol value's restriction.
     SYMBOLS = re.compile('([a-z]{1}|[0-9]+)')
-    EMPTY = ' '
+    # Reserved character for representing root Node.
+    EMPTY = ' ' 
 
-    def __init__(self, symbol):
+    def __init__(self, symbol: Char):
+        """Accepts only one character defined as pattern at SYMBOLS.
+        """
         if not (Node.SYMBOLS.match(symbol) or symbol == Node.EMPTY):
-            raise RuntimeError("symbol must be 1 character string")
-        self._symbol = symbol
-        self._children = {}
+            msg = "symbol must be alphaneumeric or empty character"
+            raise RuntimeError(msg)
 
-    def has_child(self, symbol):
+        self._symbol: Char = symbol
+        self._children: dict[Char, 'Node'] = {}
+
+    def has_child(self, symbol: Char) -> bool:
+        """Return if this Node has child whose _symbol is symbol.
+        """
         return symbol in self._children
 
-    def child_of(self, symbol):
+    def child_of(self, symbol: Char) -> 'Node':
+        """Get Node object if this object has child whose _symbol is given one.
+        """
         if not self.has_child(symbol):
             raise RuntimeError(f'no corresponding child: symbol={symbol}')
         return self._children[symbol]
 
-    def append(self, node):
+    def append(self, node: 'Node'):
+        """Append node to _children.
+        """
         symbol = node.symbol()
         if self.has_child(symbol):
             raise RuntimeError(f'given child already exists: symbol={symbol}')
@@ -42,8 +66,11 @@ class Node:
 
     @staticmethod
     def chain_head(symbols):
+        """return n[s] -> n[y] -> n[m] -> n[b] -> n[o] -> n[l] -> [s].
+        where n represent Node object and -> represent _children link
+        """
         if len(symbols) == 0:
-            raise RuntimeError("given symbols is empty string")
+            return Node.empty()
         nodes = map(Node.of, symbols)
         # chaining
         for i in range(0, len(nodes)-1):
@@ -52,6 +79,9 @@ class Node:
 
 
 def construct_trie(patterns):
+    """Constructing trie from specified patterns and returning
+    root of its trie.
+    """
     root = Node.empty()
     for pattern in patterns:
         curr = root
@@ -64,15 +94,19 @@ def construct_trie(patterns):
     return root
 
 
-def prefix_match(text, trie):
+def prefix_trie_matching(text, trie):
+    """Check if given text matches pattern represented as trie node.
+    """
     if not text:
         return text
     sym_iter = iter(text)
     curr_sym = next(sym_iter, False)
     v = trie
     while curr_sym:
+        # End checking
         if v.is_leaf():
             return True
+        # Continue checking
         elif v.has_child(curr_sym):
             v = v.child_of(curr_sym)
             curr_sym = next(sym_iter, False)
@@ -81,8 +115,10 @@ def prefix_match(text, trie):
     return False
 
 
-def trie_matching(text, trie):
+def trie_matching(whole_text, trie):
     result = False
-    for i in range(len(text)):
-        result = prefix_match(text[i:], trie)
+    # Sliding head of whole_text's substring
+    for i in range(len(whole_text)):
+        head_truncated_text = whole_text[i:]
+        result = prefix_trie_matching(head_truncated_text, trie)
     return result
