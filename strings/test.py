@@ -7,6 +7,7 @@ from burrows_wheeler import (
     burrows_wheeler_transform,
     burrows_wheeler_decoding_bad,
     burrows_wheeler_decoding,
+    bwt_matching,
 )
 
 
@@ -70,6 +71,13 @@ class TestSort(unittest.TestCase):
         actual = burrows_wheeler_decoding(input)
         expected = 'GAGAGA$'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
+
+    def test_bwt_matching(self):
+        input = 'panamabananas'
+        bw_code = burrows_wheeler_transform(input).as_encoding()
+        match_num = bwt_matching(bw_code, 'ana')
+        expected = 3
+        self.assertEqual(match_num, expected, 'test_bwt_matching')
 
 
 if __name__ == "__main__":

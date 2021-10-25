@@ -38,8 +38,6 @@ def run_length_encoding(text: str) -> RLItem:
             result.append(length, head_c)
             head_i = curr_i
             head_c = curr_c
-    print(f'len: {len(text)}')
-    print(f'head_i: {head_i}, head_c: {head_c}')
     result.append(len(text)-head_i, curr_c)
     return result
 
@@ -104,3 +102,48 @@ def burrows_wheeler_decoding(bw_code):
         result += sorted_key
         bw_key = (sorted_key, i)
     return result
+
+
+# NOTE: Codes below are incorrect.
+def find_first(bw_indexed: [IndexedChar], ch: str):
+    from_head = -1
+    for i in range(len(bw_indexed)):
+        (bwch, ch_i) = bw_indexed[i]
+        if ch == bwch:
+            from_head = i
+            break
+    return bw_indexed[from_head]
+    
+
+def find_last(bw_indexed: [IndexedChar], ch: str):
+    from_head = -1
+    for i in reversed(range(len(bw_indexed))):
+        (bwch, ch_i) = bw_indexed[i]
+        if ch == bwch:
+            from_head = i
+            break
+    return bw_indexed[from_head]
+    
+
+def bwt_matching(bw_code, pattern):
+    indexed_bw = decorate_index(bw_code)
+    sorted_bw = sorted(indexed_bw)
+    top = 0
+    buttom = len(bw_code)-1
+    for ch in reversed(pattern):
+        print(f'top: {top}, buttom: {buttom}')
+        chi_first = find_first(indexed_bw, ch)
+        print(f'chi_first: {chi_first}')
+        for i, chi in enumerate(sorted_bw):
+            if chi == chi_first:
+                top = i
+                break
+        chi_last = find_last(indexed_bw, ch)
+        print(f'chi_last: {chi_last}')
+        for i, chi in reversed(list(enumerate(sorted_bw))):
+            if chi == chi_last:
+                buttom = i
+                break
+        if top >= buttom:
+            return 0
+    return buttom - top
