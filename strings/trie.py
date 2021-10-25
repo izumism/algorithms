@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 
 Char = str
@@ -78,23 +79,27 @@ class Node:
         return nodes[0]
 
 
-def construct_trie(patterns):
+def append_symbols(node: Node, symbols: str):
+    curr = node
+    for i, symbol in enumerate(symbols):
+        if curr.has_child(symbol):
+            curr = curr.child_of(symbol)
+        else:
+            to_be_added = Node.chain_head(symbols[i:])
+            curr = curr.append(to_be_added)
+
+
+def construct_trie(patterns: List[str]) -> Node:
     """Constructing trie from specified patterns and returning
     root of its trie.
     """
     root = Node.empty()
     for pattern in patterns:
-        curr = root
-        for i, symbol in enumerate(pattern):
-            if curr.has_child(symbol):
-                curr = curr.child_of(symbol)
-            else:
-                to_be_added = Node.chain_head(pattern[i:])
-                curr = curr.append(to_be_added)
+        append_symbols(root, pattern)
     return root
 
 
-def prefix_trie_matching(text, trie):
+def prefix_trie_matching(text: str, trie: Node) -> bool:
     """Check if given text matches pattern represented as trie node.
     """
     if not text:
@@ -115,10 +120,22 @@ def prefix_trie_matching(text, trie):
     return False
 
 
-def trie_matching(whole_text, trie):
+def trie_matching(whole_text, trie) -> bool:
     result = False
     # Sliding head of whole_text's substring
     for i in range(len(whole_text)):
         head_truncated_text = whole_text[i:]
         result = prefix_trie_matching(head_truncated_text, trie)
     return result
+
+
+def construct_suffix_trie(text: str) -> Node:
+    """Memory inefficient & simple implementation for constructing
+    suffix trie
+    """
+    root = Node.empty()
+    for i in range(len(text)):
+        # Variable i represents position of suffix at text.
+        suffix: str = text[i:] + str(i)
+        append_symbols(root, suffix)
+    return root
