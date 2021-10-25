@@ -59,10 +59,16 @@ class TestSort(unittest.TestCase):
         expected = 'banana'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
 
-    def test_burrows_wheeler_decoding(self):
+    def test_burrows_wheeler_decoding1(self):
         input = 'smnpbnnaaaaa$a'
         actual = burrows_wheeler_decoding(input)
         expected = 'panamabananas$'
+        self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
+
+    def test_burrows_wheeler_decoding2(self):
+        input = 'AGGGAA$'
+        actual = burrows_wheeler_decoding(input)
+        expected = 'GAGAGA$'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
 
 
