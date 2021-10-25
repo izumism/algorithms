@@ -1,6 +1,7 @@
-def num_char(num, char):
-    return str(num) + char
+"""Implementation for pattern matching using Burrows-Wheeler transform.
 
+Target -> Burrows-Wheeler transform -> Run-Length encocing
+"""
 
 class RLItem:
     def __init__(self):
