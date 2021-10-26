@@ -104,46 +104,43 @@ def burrows_wheeler_decoding(bw_code):
     return result
 
 
-# NOTE: Codes below are incorrect.
-def find_first(bw_indexed: [IndexedChar], ch: str):
-    from_head = -1
-    for i in range(len(bw_indexed)):
-        (bwch, ch_i) = bw_indexed[i]
-        if ch == bwch:
-            from_head = i
-            break
-    return bw_indexed[from_head]
-    
+def get_top_index(arr: [IndexedChar], first, last, ch):
+    for i in range(first, last + 1):
+        if arr[i][0] == ch:
+            return i
+    return -1
 
-def find_last(bw_indexed: [IndexedChar], ch: str):
-    from_head = -1
-    for i in reversed(range(len(bw_indexed))):
-        (bwch, ch_i) = bw_indexed[i]
-        if ch == bwch:
-            from_head = i
-            break
-    return bw_indexed[from_head]
-    
+
+def get_buttom_index(arr: [IndexedChar], first, last, ch):
+    for i in reversed(range(first, last+1)):
+        if arr[i][0] == ch:
+            return i
+    return -1
+
 
 def bwt_matching(bw_code, pattern):
     indexed_bw = decorate_index(bw_code)
     sorted_bw = sorted(indexed_bw)
+    ch2sorted_i = {ch_i: i for i, ch_i in enumerate(sorted_bw)}
+    # top and buttom are always valid index to access indexex_bw
     top = 0
-    buttom = len(bw_code)-1
-    for ch in reversed(pattern):
-        print(f'top: {top}, buttom: {buttom}')
-        chi_first = find_first(indexed_bw, ch)
-        print(f'chi_first: {chi_first}')
-        for i, chi in enumerate(sorted_bw):
-            if chi == chi_first:
-                top = i
-                break
-        chi_last = find_last(indexed_bw, ch)
-        print(f'chi_last: {chi_last}')
-        for i, chi in reversed(list(enumerate(sorted_bw))):
-            if chi == chi_last:
-                buttom = i
-                break
-        if top >= buttom:
-            return 0
-    return buttom - top
+    buttom = len(bw_code) - 1
+    pattern_rev = iter(reversed(pattern))
+    while top <= buttom:
+        pattern_ch = next(pattern_rev, False)
+        if pattern_ch:
+            top_index = get_top_index(
+                indexed_bw, top, buttom, pattern_ch)
+            if top_index == -1:
+                return 0
+            buttom_index = get_buttom_index(
+                indexed_bw, top, buttom, pattern_ch)
+            top = ch2sorted_i[indexed_bw[top_index]]
+            buttom = ch2sorted_i[indexed_bw[buttom_index]]
+            print(
+                f'pattern_ch: {pattern_ch}, top_index: {top_index}, '
+                f'buttom_index: {buttom_index}, top: {top}, buttom: {buttom}'
+            )
+
+        else:
+            return buttom - top + 1

@@ -7,6 +7,9 @@ from burrows_wheeler import (
     burrows_wheeler_transform,
     burrows_wheeler_decoding_bad,
     burrows_wheeler_decoding,
+    decorate_index,
+    get_top_index,
+    get_buttom_index,
     bwt_matching,
 )
 
@@ -71,6 +74,19 @@ class TestSort(unittest.TestCase):
         actual = burrows_wheeler_decoding(input)
         expected = 'GAGAGA$'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
+
+    def test_bwt_matching_using_func(self):
+        input = 'panamabananas'
+        bw_code = burrows_wheeler_transform(input).as_encoding()
+        self.assertEqual(bw_code, 'smnpbnnaaaaa$a', 'bwt_encode')
+        indexed_bw = decorate_index(bw_code)
+        buttom_index = len(indexed_bw) - 1
+        top_index = get_top_index(indexed_bw, 0, buttom_index, 'a')
+        self.assertEqual(top_index, 7, 'top_index')
+        buttom_index = get_buttom_index(indexed_bw, 0, buttom_index, 'a')
+        self.assertEqual(buttom_index, 13, 'buttom_index')
+        buttom_index2 = get_buttom_index(indexed_bw, 1, 6, 'n')
+        self.assertEqual(buttom_index2, 6, 'buttom_index2')
 
     def test_bwt_matching(self):
         input = 'panamabananas'
