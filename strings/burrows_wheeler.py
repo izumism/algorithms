@@ -20,7 +20,7 @@ class RLItem:
             char * length for length, char in self.length_char])
 
 
-def run_length_encoding(text: str) -> RLItem:
+def parse2run_length(text: str) -> RLItem:
     if not text:
         return ''
     head_i = 0
@@ -42,6 +42,11 @@ def run_length_encoding(text: str) -> RLItem:
     return result
 
 
+def run_length_encoding(text: str) -> str:
+    items = parse2run_length(text)
+    return items.as_encoding()
+
+
 class BWItem:
     def __init__(self):
         self.before_after = []
@@ -53,7 +58,7 @@ class BWItem:
         return ''.join([after for before, after in self.before_after])
 
 
-def burrows_wheeler_transform(text):
+def burrows_wheeler_transform(text: str) -> BWItem:
     target = text + '$'
     length = len(target)
     cycles = [target[i:length] + target[0:i] for i in range(len(target))]
@@ -61,6 +66,11 @@ def burrows_wheeler_transform(text):
     for cycle in sorted(cycles):
         result.append(cycle[0], cycle[-1])
     return result
+
+
+def burrow_wheeler_encoding(text: str) -> str:
+    parsed = burrows_wheeler_transform(text)
+    return parsed.as_encoding()
 
 
 def sort_by_first(rows):

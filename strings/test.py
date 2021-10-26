@@ -3,10 +3,12 @@ import string
 import unittest
 
 from burrows_wheeler import (
+    parse2run_length,
     run_length_encoding,
     burrows_wheeler_transform,
     burrows_wheeler_decoding_bad,
     burrows_wheeler_decoding,
+    burrows_wheeler_encoding,
     decorate_index,
     get_top_index,
     get_buttom_index,
@@ -26,48 +28,44 @@ class TestSort(unittest.TestCase):
         input = 'GGGGGGGGGGCCCCCCCCCCCAAAAAAATTTTTTTTTTTTTTTCCCCCG'
         actual = run_length_encoding(input)
         expected = '10G11C7A15T5C1G'
-        self.assertEqual(actual.as_encoding(), expected, 'run_length_encoding')
+        self.assertEqual(actual, expected, 'run_length_encoding')
 
     def test_run_length_encoding2(self):
         input = 'GGGGGGGGGGCCCCCCCCCCCAAAAAAATTTTTTTTTTTTTTTCCCCC'
         actual = run_length_encoding(input)
         expected = '10G11C7A15T5C'
-        self.assertEqual(actual.as_encoding(), expected, 'run_length_encoding')
+        self.assertEqual(actual, expected, 'run_length_encoding')
 
     def test_run_length_encode_decode(self):
         input = random_alphabetic_text(10)
-        result = run_length_encoding(input).as_decoding()
+        result = parse2run_length(input).as_decoding()
         self.assertEqual(
             result, input,
             'run_length encoding/decoding property based testing')
 
-    def test_burrows_wheeler_transform1(self):
+    def test_burrows_wheeler_encoding1(self):
         input = 'panamabananas'
-        actual = burrows_wheeler_transform(input)
+        actual = burrows_wheeler_encoding(input)
         expected = 'smnpbnnaaaaa$a'
-        self.assertEqual(
-            actual.as_encoding(), expected,
-            'burrows_wheeler_transform')
-
-    def test_burrows_wheeler_transform2(self):
-        input = 'AGACATA'
-        actual = burrows_wheeler_transform(input)
-        expected = 'ATG$CAAA'
-        self.assertEqual(
-            actual.as_encoding(), expected,
-            'burrows_wheeler_transform')
-
-    def test_burrows_wheeler_decoding_bad(self):
-        input = 'annb$aa'
-        actual = burrows_wheeler_decoding_bad(input)
-        expected = 'banana'
-        self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
+        self.assertEqual(actual, expected, 'burrows_wheeler_encoding1')
 
     def test_burrows_wheeler_decoding1(self):
         input = 'smnpbnnaaaaa$a'
         actual = burrows_wheeler_decoding(input)
         expected = 'panamabananas$'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
+
+    def test_burrows_wheeler_encoding2(self):
+        input = 'AGACATA'
+        actual = burrows_wheeler_encoding(input)
+        expected = 'ATG$CAAA'
+        self.assertEqual(actual, expected, 'burrows_wheeler_encoding2')
+
+    def test_burrows_wheeler_decoding_bad(self):
+        input = 'annb$aa'
+        actual = burrows_wheeler_decoding_bad(input)
+        expected = 'banana'
+        self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
 
     def test_burrows_wheeler_decoding2(self):
         input = 'AGGGAA$'
