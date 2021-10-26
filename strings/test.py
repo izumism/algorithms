@@ -61,17 +61,19 @@ class TestSort(unittest.TestCase):
         expected = 'ATG$CAAA'
         self.assertEqual(actual, expected, 'burrows_wheeler_encoding2')
 
-    def test_burrows_wheeler_decoding_bad(self):
-        input = 'annb$aa'
-        actual = burrows_wheeler_decoding_bad(input)
-        expected = 'banana'
-        self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
-
     def test_burrows_wheeler_decoding2(self):
         input = 'AGGGAA$'
         actual = burrows_wheeler_decoding(input)
         expected = 'GAGAGA$'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding')
+
+    def test_bwt_matching(self):
+        input = 'panamabananas'
+        bw_code = burrows_wheeler_encoding(input)
+        self.assertEqual(bw_code, 'smnpbnnaaaaa$a', 'matcher input')
+        match_num = bwt_matching(bw_code, 'ana')
+        expected = 3
+        self.assertEqual(match_num, expected, 'test_bwt_matching')
 
     def test_bwt_matching_using_func(self):
         input = 'panamabananas'
@@ -86,13 +88,11 @@ class TestSort(unittest.TestCase):
         buttom_index2 = get_buttom_index(indexed_bw, 1, 6, 'n')
         self.assertEqual(buttom_index2, 6, 'buttom_index2')
 
-    def test_bwt_matching(self):
-        input = 'panamabananas'
-        bw_code = burrows_wheeler_transform(input).as_encoding()
-        match_num = bwt_matching(bw_code, 'ana')
-        expected = 3
-        self.assertEqual(match_num, expected, 'test_bwt_matching')
-
+    def test_burrows_wheeler_decoding_bad(self):
+        input = 'annb$aa'
+        actual = burrows_wheeler_decoding_bad(input)
+        expected = 'banana'
+        self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
 
 if __name__ == "__main__":
     unittest.main()

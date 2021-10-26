@@ -58,6 +58,7 @@ class BWItem:
         return ''.join([after for before, after in self.before_after])
 
 
+# Memory: O(|TEXT|), Time: O(N*log(N))
 def burrows_wheeler_transform(text: str) -> BWItem:
     target = text + '$'
     length = len(target)
@@ -68,7 +69,7 @@ def burrows_wheeler_transform(text: str) -> BWItem:
     return result
 
 
-def burrow_wheeler_encoding(text: str) -> str:
+def burrows_wheeler_encoding(text: str) -> str:
     parsed = burrows_wheeler_transform(text)
     return parsed.as_encoding()
 
@@ -100,7 +101,7 @@ def decorate_index(bw_code: [str]) -> [IndexedChar]:
     return result
 
 
-# Efficient
+# Memory: 2|TEXT|, Time: O(|TEXT|)
 def burrows_wheeler_decoding(bw_code):
     indexed_bw = decorate_index(bw_code)
     sorted_bw = sorted(indexed_bw)
