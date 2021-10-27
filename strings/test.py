@@ -132,5 +132,12 @@ class TestSort(unittest.TestCase):
         expected = 'banana'
         self.assertEqual(actual, expected, 'burrows_wheeler_decoding_bad')
 
+    def test_suffix_array_creation(self):
+        input = 'panamabananas'
+        actual = create_suffix_array(input)
+        expected = [13, 5, 3, 1, 7, 9, 11, 6, 4, 2, 8, 10, 0, 12]
+        self.assertListEqual(actual, expected, 'suffix array creation')
+
+
 if __name__ == "__main__":
     unittest.main()

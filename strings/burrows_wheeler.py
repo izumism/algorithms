@@ -58,11 +58,16 @@ class BWItem:
         return ''.join([after for before, after in self.before_after])
 
 
-# Memory: O(|TEXT|), Time: O(N*log(N))
-def burrows_wheeler_transform(text: str) -> BWItem:
+def get_cyclic_matrix(text):
     target = text + '$'
     length = len(target)
     cycles = [target[i:length] + target[0:i] for i in range(len(target))]
+    return cycles
+
+
+# Memory: O(|TEXT|), Time: O(N*log(N))
+def burrows_wheeler_transform(text: str) -> BWItem:
+    cycles = get_cyclic_matrix(text)
     result = BWItem()
     for cycle in sorted(cycles):
         result.append(cycle[0], cycle[-1])
@@ -89,7 +94,7 @@ def burrows_wheeler_decoding_bad(bw_code):
 IndexedChar = (str, int)
 
 
-def decorate_index(bw_code: [str]) -> [IndexedChar]:
+def decorate_index(bw_code: str) -> [IndexedChar]:
     counter = {}
     result = []
     for ch in bw_code:
@@ -199,3 +204,16 @@ def create_count_array(bw_code):
         curr[symbol_index_map[ch]] += 1
         result.append(curr.copy())
     return (result, symbol_index_map)
+
+
+def create_suffix_array(text):
+    text_sz = len(text)
+    END_SYM = '$'
+
+    def distance_from_head(cycle):
+        for i, sym in enumerate(cycle):
+            if sym == END_SYM:
+                return text_sz - i
+
+    cycles = sorted(get_cyclic_matrix(text))
+    return [distance_from_head(cycle) for cycle in cycles]
