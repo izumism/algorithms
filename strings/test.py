@@ -9,10 +9,13 @@ from burrows_wheeler import (
     burrows_wheeler_decoding_bad,
     burrows_wheeler_decoding,
     burrows_wheeler_encoding,
+    create_count_array,
     decorate_index,
     get_top_index,
     get_buttom_index,
     bwt_matching,
+    bwt_matching_better,
+    create_suffix_array,
 )
 
 
@@ -72,6 +75,41 @@ class TestSort(unittest.TestCase):
         bw_code = burrows_wheeler_encoding(input)
         self.assertEqual(bw_code, 'smnpbnnaaaaa$a', 'matcher input')
         match_num = bwt_matching(bw_code, 'ana')
+        expected = 3
+        self.assertEqual(match_num, expected, 'test_bwt_matching')
+
+    def test_create_count_array(self):
+        input = 'smnpbnnaaaaa$a'
+        count_array, sym_i = create_count_array(input)
+        self.assertEqual(
+            len(count_array), len(input)+1, 'array row size')
+        self.assertEqual(
+            len(count_array[0]), len(set(input)), 'array column size')
+        expected = [
+            # $, a, b, m, n, p, s
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 0, 1, 1, 0, 1],
+            [0, 0, 0, 1, 1, 1, 1],
+            [0, 0, 1, 1, 1, 1, 1],
+            [0, 0, 1, 1, 2, 1, 1],
+            [0, 0, 1, 1, 3, 1, 1],
+            [0, 1, 1, 1, 3, 1, 1],
+            [0, 2, 1, 1, 3, 1, 1],
+            [0, 3, 1, 1, 3, 1, 1],
+            [0, 4, 1, 1, 3, 1, 1],
+            [0, 5, 1, 1, 3, 1, 1],
+            [1, 5, 1, 1, 3, 1, 1],
+            [1, 6, 1, 1, 3, 1, 1],
+        ]
+        self.assertEqual(count_array, expected, 'array elems')
+
+    def test_bwt_matching_better(self):
+        input = 'panamabananas'
+        bw_code = burrows_wheeler_encoding(input)
+        self.assertEqual(bw_code, 'smnpbnnaaaaa$a', 'matcher input')
+        match_num = bwt_matching_better(bw_code, 'ana')
         expected = 3
         self.assertEqual(match_num, expected, 'test_bwt_matching')
 

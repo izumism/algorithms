@@ -155,3 +155,47 @@ def bwt_matching(bw_code, pattern):
 
         else:
             return buttom - top + 1
+
+
+# NOTE: not implemented yet
+def bwt_matching_better(bw_code, pattern):
+    last_col = decorate_index(bw_code)
+    first_col = sorted(last_col)
+
+    def first_occurence(sym):
+        for i, (ch, id) in enumerate(first_col):
+            if ch == sym:
+                return i
+        raise RuntimeError('sym not in first_col')
+
+    count_array, symbol_index_map = create_count_array(bw_code)
+
+    def count(row_i, sym):
+        return count_array[row_i][symbol_index_map[sym]]
+
+    # top and buttom are always valid index to access indexex_bw
+    top = 0
+    buttom = len(bw_code) - 1
+    pattern_rev = iter(reversed(pattern))
+    while top <= buttom:
+        pattern_ch = next(pattern_rev, False)
+        if pattern_ch:
+            top = first_occurence(pattern_ch) + count(top, pattern_ch)
+            buttom = (first_occurence(pattern_ch) +
+                      count(buttom+1, pattern_ch) - 1)
+        else:
+            return buttom - top + 1
+
+
+def create_count_array(bw_code):
+    symbol_set = sorted(set(bw_code))
+    symbol_index_map = {
+        sym: i for i, sym in enumerate(symbol_set)
+    }
+    result = []
+    curr = [0] * len(symbol_set)
+    result.append(curr.copy())
+    for ch in bw_code:
+        curr[symbol_index_map[ch]] += 1
+        result.append(curr.copy())
+    return (result, symbol_index_map)
