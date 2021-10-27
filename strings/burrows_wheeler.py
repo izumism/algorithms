@@ -130,9 +130,9 @@ def get_buttom_index(arr: [IndexedChar], first, last, ch):
 
 
 def bwt_matching(bw_code, pattern):
-    indexed_bw = decorate_index(bw_code)
-    sorted_bw = sorted(indexed_bw)
-    ch2sorted_i = {ch_i: i for i, ch_i in enumerate(sorted_bw)}
+    last_col = decorate_index(bw_code)
+    first_col = sorted(last_col)
+    ch2sorted_i = {ch_i: i for i, ch_i in enumerate(first_col)}
     # top and buttom are always valid index to access indexex_bw
     top = 0
     buttom = len(bw_code) - 1
@@ -141,13 +141,13 @@ def bwt_matching(bw_code, pattern):
         pattern_ch = next(pattern_rev, False)
         if pattern_ch:
             top_index = get_top_index(
-                indexed_bw, top, buttom, pattern_ch)
+                last_col, top, buttom, pattern_ch)
             if top_index == -1:
                 return 0
             buttom_index = get_buttom_index(
-                indexed_bw, top, buttom, pattern_ch)
-            top = ch2sorted_i[indexed_bw[top_index]]
-            buttom = ch2sorted_i[indexed_bw[buttom_index]]
+                last_col, top, buttom, pattern_ch)
+            top = ch2sorted_i[last_col[top_index]]
+            buttom = ch2sorted_i[last_col[buttom_index]]
             print(
                 f'pattern_ch: {pattern_ch}, top_index: {top_index}, '
                 f'buttom_index: {buttom_index}, top: {top}, buttom: {buttom}'
