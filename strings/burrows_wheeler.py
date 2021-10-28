@@ -221,3 +221,10 @@ def create_suffix_array_bad(text):
 
     cycles = sorted(get_cyclic_matrix(text))
     return [distance_from_head(cycle) for cycle in cycles]
+
+
+# Too hard to implement
+def bwt_matching_approximate(text, pattern, mismatch):
+    last_column = decorate_index(burrows_wheeler_encoding(text))
+    first_column = sorted(last_column)
+

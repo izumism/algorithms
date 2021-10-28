@@ -17,6 +17,7 @@ from burrows_wheeler import (
     get_cyclic_matrix_plain,
     bwt_matching,
     bwt_matching_better,
+    bwt_matching_approximate,
     create_suffix_array_bad,
 )
 
@@ -145,6 +146,14 @@ class TestSort(unittest.TestCase):
         actual = create_suffix_array_bad(input)
         expected = [8, 7, 5, 3, 1, 6, 4, 2, 0]
         self.assertListEqual(actual, expected, 'suffix array creation')
+
+    def test_bwt_matching_approximate(self):
+        text = 'panamabananas'
+        pattern = 'ana'
+        mismatch = 1
+        actual = bwt_matching_approximate(text, pattern, mismatch)
+        expected = 5
+        self.assertEqual(actual, expected, 'panamamabanana ana 1 mismatch')
 
 
 if __name__ == "__main__":
