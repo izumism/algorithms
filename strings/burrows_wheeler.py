@@ -60,8 +60,12 @@ class BWItem:
 
 def get_cyclic_matrix(text):
     target = text + '$'
-    length = len(target)
-    cycles = [target[i:length] + target[0:i] for i in range(len(target))]
+    return get_cyclic_matrix_plain(target)
+
+
+def get_cyclic_matrix_plain(text):
+    length = len(text)
+    cycles = [text[i:length] + text[0:i] for i in range(len(text))]
     return cycles
 
 
