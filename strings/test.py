@@ -140,6 +140,12 @@ class TestSort(unittest.TestCase):
         expected = [13, 5, 3, 1, 7, 9, 11, 6, 4, 2, 8, 10, 0, 12]
         self.assertListEqual(actual, expected, 'suffix array creation')
 
+    def test_suffix_array_creation2(self):
+        input = 'GAGAGAGA'
+        actual = create_suffix_array_bad(input)
+        expected = [8, 7, 5, 3, 1, 6, 4, 2, 0]
+        self.assertListEqual(actual, expected, 'suffix array creation')
+
 
 if __name__ == "__main__":
     unittest.main()
