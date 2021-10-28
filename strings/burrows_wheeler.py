@@ -210,7 +210,7 @@ def create_count_array(bw_code):
     return (result, symbol_index_map)
 
 
-def create_suffix_array(text):
+def create_suffix_array_bad(text):
     text_sz = len(text)
     END_SYM = '$'
 

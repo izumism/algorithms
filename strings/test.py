@@ -13,9 +13,11 @@ from burrows_wheeler import (
     decorate_index,
     get_top_index,
     get_buttom_index,
+    get_cyclic_matrix,
+    get_cyclic_matrix_plain,
     bwt_matching,
     bwt_matching_better,
-    create_suffix_array,
+    create_suffix_array_bad,
 )
 
 
@@ -134,7 +136,7 @@ class TestSort(unittest.TestCase):
 
     def test_suffix_array_creation(self):
         input = 'panamabananas'
-        actual = create_suffix_array(input)
+        actual = create_suffix_array_bad(input)
         expected = [13, 5, 3, 1, 7, 9, 11, 6, 4, 2, 8, 10, 0, 12]
         self.assertListEqual(actual, expected, 'suffix array creation')
 
