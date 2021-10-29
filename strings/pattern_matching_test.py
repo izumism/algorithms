@@ -7,7 +7,7 @@ from pattern_matching import (
     length_to_skip,
     prefix_function_bad,
     prefix_function,
-    match_by_prefix_function,
+    knuth_morris_pratt,
 )
 
 
@@ -67,7 +67,7 @@ class TestPatternMatching(unittest.TestCase):
     def test_match_by_prefix_function(self):
         pattern = 'abra'
         text = 'abracadabra'
-        actual = match_by_prefix_function(text, pattern)
+        actual = knuth_morris_pratt(text, pattern)
         expected = [0, 7]
         self.assertListEqual(actual, expected, 'prefix function matching')
 
