@@ -5,6 +5,9 @@ from suffix_array import (
     suffix_array,
     get_cyclic_order_index,
     construct_suffix_array,
+    counting_sort,
+    compute_class,
+    shift_util,
 )
 
 
@@ -44,6 +47,26 @@ class TestSuffixArray(unittest.TestCase):
         actual = construct_suffix_array(string)
         expected = [6, 5, 4, 2, 0, 3, 1]
         self.assertListEqual(actual, expected, 'suffix array')
+
+    def test_counting_sort(self):
+        string = 'ababaa$'
+        actual = counting_sort(string)
+        expected = [6, 0, 2, 4, 5, 1, 3]
+        self.assertEqual(actual, expected, 'counting sort')
+
+    """
+    def test_class_arr(self):
+        string = 'ababaa$'
+        actual = compute_class(string, counting_sort(string))
+        expected = [1, 2, 1, 2, 1, 1, 0]
+        self.assertEqual(actual, expected, 'counting sort')
+    """
+
+    def test_shift_util(self):
+        string = 'ababaa$'
+        length = 2
+        (ci, ci_prime) = shift_util(string, length)
+        self.assertEqual(ci_prime(2), ('ab', 'aa'), 'Ci\'')
 
 
 if __name__ == "__main__":
