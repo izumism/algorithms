@@ -8,15 +8,10 @@ def suffixes_lexicographic_order(string):
 DOLLAR = '$'
 
 
-def sublist_to_dollar(string: str) -> str:
-    for i in range(len(string)):
-        if string[i] == DOLLAR:
-            return string[:i+1]
-    assert False, 'string must include "$", string: {0}'.format(string)
-    return string
-
-
 def suffix_array(string) -> [int]:
+    if string[-1] != DOLLAR:
+        raise RuntimeError(
+            f"input must ends with '$' character, given={string}")
     suff_pos = {}
     for pos in range(len(string)):
         suff_pos[string[pos:]] = pos
