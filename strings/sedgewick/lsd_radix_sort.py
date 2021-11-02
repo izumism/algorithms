@@ -1,4 +1,4 @@
-from alphabets import ALPH2INDEX, INDEX2ALPH, alph2ids, ids2alph
+import alphabets
 
 
 def counting_sort(target, r, key=lambda x: x):
@@ -16,16 +16,16 @@ def counting_sort(target, r, key=lambda x: x):
     return result
 
 
-def counting_sort_alphabets(alphabets):
-    index_arr = alph2ids(alphabets)
-    r = len(ALPH2INDEX)
+def counting_sort_alphabets(alphs):
+    index_arr = alphabets.alph2ids(alphs)
+    r = alphabets.SIZE
     result = counting_sort(index_arr, r)
-    return ''.join(INDEX2ALPH[i] for i in result)
+    return alphabets.ids2alph(result)
 
 
 def lsd_radix_sort(strings, width):
     R = 26
-    string_indices = [alph2ids(string) for string in strings]
+    string_indices = [alphabets.alph2ids(string) for string in strings]
     for d in reversed(range(0, width)):
         string_indices = counting_sort(string_indices, R, lambda x: x[d])
-    return [ids2alph(ids) for ids in string_indices]
+    return [alphabets.ids2alph(ids) for ids in string_indices]
