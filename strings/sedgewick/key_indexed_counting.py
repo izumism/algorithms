@@ -1,4 +1,5 @@
 ALPHA2INDEX = {chr(ord('a')+i): i for i in range(26)}
+INDEX2ALPHA = {i: ch for ch, i in ALPHA2INDEX.items()}
 
 
 def create_alpha_2_index(charset):

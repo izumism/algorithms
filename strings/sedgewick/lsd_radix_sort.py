@@ -1,4 +1,4 @@
-from key_indexed_counting import ALPHA2INDEX
+from alphabets import ALPH2INDEX
 
 
 def lsd_radix_sort(strings, width):
@@ -8,10 +8,10 @@ def lsd_radix_sort(strings, width):
     for d in reversed(range(0, width)):
         count = [0] * (R + 1)
         for string in strings:
-            count[ALPHA2INDEX[string[d]] + 1] += 1
+            count[ALPH2INDEX[string[d]] + 1] += 1
         for r in range(R):
             count[r+1] += count[r]
         for string in strings:
-            result[count[ALPHA2INDEX[string[d]]]] = string
-            count[ALPHA2INDEX[string[d]]] += 1
+            result[count[ALPH2INDEX[string[d]]]] = string
+            count[ALPH2INDEX[string[d]]] += 1
     return result
