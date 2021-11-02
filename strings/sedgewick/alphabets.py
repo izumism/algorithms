@@ -9,5 +9,3 @@ def alph2ids(alphabets):
 
 def ids2alph(ids):
     return ''.join(INDEX2ALPH[i] for i in ids)
-
-
