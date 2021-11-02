@@ -2,7 +2,9 @@ import unittest
 
 from lcp import lcp
 from key_indexed_counting import key_indexed_counting
-from lsd_radix_sort import lsd_radix_sort
+from lsd_radix_sort import (
+    lsd_radix_sort, counting_sort, counting_sort_alphabets
+)
 
 
 class Leccture17(unittest.TestCase):
@@ -29,6 +31,19 @@ class Leccture17(unittest.TestCase):
             'ebb', 'fad', 'fed', 'fee'
         ]
         self.assertListEqual(actual, expected, 'lsd radix sort')
+
+    def test_counting_sort(self):
+        input = [2, 5, 3, 0, 2, 3, 0, 3]
+        k = 6
+        actual = counting_sort(input, k)
+        expected = [0, 0, 2, 2, 3, 3, 3, 5]
+        self.assertEqual(actual, expected, 'counting sort')
+
+    def test_alphabets_counting_sort(self):
+        input = 'ababacddaccba'
+        actual = counting_sort_alphabets(input)
+        expected = 'aaaaabbbcccdd'
+        self.assertEqual(actual, expected, 'alphabets counting sort')
 
 
 if __name__ == "__main__":
